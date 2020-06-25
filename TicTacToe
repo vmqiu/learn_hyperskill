@@ -1,0 +1,82 @@
+# Victor Manuel Qiu Pan 
+# 2020
+
+class TicTacToe:
+
+    def __init__(self):
+        self.table = "         "
+        self.table = [self.table[0:3], self.table[3:6], self.table[6:10]]
+
+    def state(self):
+        print("---------")
+        print("| {} {} {} |".format(self.table[0][0], self.table[0][1], self.table[0][2]))
+        print("| {} {} {} |".format(self.table[1][0], self.table[1][1], self.table[1][2]))
+        print("| {} {} {} |".format(self.table[2][0], self.table[2][1], self.table[2][2]))
+        print("---------")
+
+    def is_winner(self, letter):
+        return (
+                self.table[0][0] == letter and self.table[0][1] == letter and self.table[0][2] == letter
+                or (self.table[1][0] == letter and self.table[1][1] == letter and self.table[1][2] == letter)
+                or (self.table[2][0] == letter and self.table[2][1] == letter and self.table[2][2] == letter)
+                or (self.table[0][0] == letter and self.table[1][0] == letter and self.table[2][2] == letter)
+                or (self.table[0][1] == letter and self.table[1][1] == letter and self.table[2][1] == letter)
+                or (self.table[0][2] == letter and self.table[1][2] == letter and self.table[2][2] == letter)
+                or (self.table[0][0] == letter and self.table[1][1] == letter and self.table[2][2] == letter)
+                or (self.table[0][2] == letter and self.table[1][1] == letter and self.table[2][0] == letter))
+
+    def draw(self):
+        for n in range(3):
+            if " " in self.table[n]:
+                return False
+        return True
+
+    def print_winner(self):
+        if self.is_winner("X"):
+            print("X wins")
+            return True
+        elif self.is_winner("O"):
+            print("O wins")
+            return True
+
+    def count_letter(self, letter):
+        count = 0
+        for x in range(3):
+            for y in self.table[x]:
+                if y == letter:
+                    count += 1
+        return count
+
+    def play(self):
+        player1 = True
+        while True:
+            if self.draw():
+                print("Draw")
+                break
+            x, y = input("Enter the coordinates:").split()
+            if not x.isdigit() or not y.isdigit():
+                print("You should enter numbers!")
+            else:
+                x = int(x)
+                y = int(y)
+                if x > 3:
+                    print("Coordinates should be from 1 to 3!")
+                elif list(self.table[3 - y])[x - 1] != " ":
+                    print("This cell is occupied! Choose another one!")
+                else:
+                    element = list(self.table[3 - y])
+                    if player1:
+                        element[x - 1] = "X"
+                        player1 = False
+                    else:
+                        element[x - 1] = "O"
+                        player1 = True
+                    self.table[3 - y] = "".join(element)
+                    self.state()
+                    if self.print_winner():
+                        break
+
+
+game = TicTacToe()
+game.state()
+game.play()
